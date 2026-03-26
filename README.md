@@ -1,10 +1,9 @@
-# 阿城 (ChatTutor)
+# Muti-Agent Tutor
 
 > 🎓 基于 LangGraph 多智能体架构的苏格拉底式 AI 学习助手
 
-阿城是一个创新的 AI 学习辅导系统，采用多角色协作式 Agent 架构，通过启发式教学引导用户深度思考，而非直接给出答案。系统提供 Web 控制台与桌面宠物双端体验，支持学习计划生成、知识图谱构建与长期记忆管理。
+Muti-Agent Tutor是一个创新的 AI 学习辅导系统，采用多角色协作式 Agent 架构，通过启发式教学引导用户深度思考，而非直接给出答案。系统提供 Web 控制台,支持学习计划生成、知识图谱构建与长期记忆管理。
 
-📖 **[查看完整产品介绍](https://www.modelscope.cn/learn/5954)**
 
 ## ✨ 特性
 
@@ -13,7 +12,6 @@
 - **🔄 流式响应** - 支持 SSE 实时输出，提供流畅的对话体验
 - **📝 自动记忆压缩** - 智能管理长对话上下文，支持语义检索历史内容
 - **📊 知识图谱** - 自动从对话中抽取实体关系，构建个人知识网络
-- **🖥️ 双端体验** - Web 控制台 + PyQt6 桌面宠物，随时随地学习
 - **🔍 联网搜索** - 集成百度搜索 API，支持实时信息查询
 
 ## 🏗️ 架构
@@ -21,10 +19,10 @@
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │                     表现层 (Presentation)                     │
-├──────────────────────────┬──────────────────────────────────┤
-│   Web Dashboard          │        Desktop Pet               │
-│   (React + Vite)         │        (PyQt6)                   │
-└──────────────────────────┴──────────────────────────────────┘
+├─────────────────────────────────────────────────────────────┤
+│                       Web Dashboard                         │
+│                       (React + Vite)                        │
+└─────────────────────────────────────────────────────────────┘
                               │
                               ▼
 ┌─────────────────────────────────────────────────────────────┐
@@ -60,9 +58,6 @@
 ### 安装
 
 ```bash
-# 克隆仓库
-git clone https://github.com/DjTaNg-404/ChatTutor.git
-cd ChatTutor
 
 # 创建虚拟环境
 python -m venv venv
@@ -107,8 +102,6 @@ uvicorn app.main:app --host 127.0.0.1 --port 8000 --reload
 cd Design_Web_Dashboard
 npm run dev -- --host 127.0.0.1 --port 5173
 
-# 终端 3 - 桌面宠物（可选）
-python desk_pet/code/main.py
 ```
 
 ### 访问
@@ -142,7 +135,6 @@ LearningBot/
 │   │   ├── deepseek_extractor.py # LLM 实体抽取
 │   │   └── kg_optimizer.py       # 图优化
 │   └── main.py                   # FastAPI 入口
-│
 ├── Design_Web_Dashboard/         # Web 前端
 │   ├── src/
 │   │   ├── app/
@@ -152,15 +144,6 @@ LearningBot/
 │   │   └── styles/
 │   ├── package.json
 │   └── vite.config.ts
-│
-├── desk_pet/                     # 桌面宠物
-│   ├── code/
-│   │   ├── main.py               # PyQt6 主程序
-│   │   ├── pet_controller.py     # 行为控制
-│   │   ├── text_worker.py        # 文本处理线程
-│   │   └── voice_worker.py       # 语音处理线程
-│   └── img/                      # 动画资源
-│
 ├── memory/                       # 数据存储
 │   ├── sessions/                 # 会话历史 (JSON)
 │   ├── notes/                    # 学习笔记 (Markdown)
@@ -270,11 +253,6 @@ Content-Type: application/json
 - **可视化**: Plotly.js, Recharts
 - **Markdown**: React-Markdown, KaTeX
 
-### 桌面宠物
-
-- **GUI**: PyQt6 6.6+
-- **Web 渲染**: PyQt6-WebEngine
-- **音频**: PyAudio
 
 ## 🧩 Agent 工作流
 
@@ -309,36 +287,4 @@ Content-Type: application/json
   返回响应
 ```
 
-## 📊 数据格式
 
-### 会话状态 (memory/sessions/*.json)
-
-```json
-{
-  "messages": [
-    {"role": "user", "content": "..."},
-    {"role": "assistant", "content": "..."}
-  ],
-  "task_id": "task_1",
-  "session_id": "task_1__20240101__120000",
-  "conversation_summary": "长期记忆摘要...",
-  "summarized_msg_count": 16,
-  "plan": {
-    "needs_tutor_answer": true,
-    "needs_inquiry": false
-  }
-}
-```
-
-### 任务计划 (memory/notes/task/*.json)
-
-```json
-{
-  "task_id": "task_1",
-  "taskTitle": "深度学习入门",
-  "totalDays": 30,
-  "plan": ["Day 1: 神经网络基础", "Day 2: 反向传播"],
-  "coreKnowledge": ["梯度下降", "激活函数"],
-  "planChecklist": {"Day 1: 神经网络基础": true}
-}
-```
